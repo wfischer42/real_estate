@@ -21,4 +21,17 @@ class House
       @rooms << new_room
     end
   end
+
+  def rooms_from_category(category)
+    @rooms.select do |room|
+      room.category == category
+    end
+  end
+
+  def area
+    @rooms.inject(0) do |area, room|
+      area += room.area
+    end
+  end
+  
 end
