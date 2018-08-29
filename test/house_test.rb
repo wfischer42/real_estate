@@ -44,7 +44,7 @@ class HouseTest < Minitest::Test
     assert_equal room_2, house.rooms[1]
   end
 
-  def test_it_can_list_rooms_by_category
+  def test_it_can_list_rooms_for_a_given_category
     house = House.new("$400000", "123 sugar lane")
     room_1 = Room.new(:bedroom, 10, 13)
     room_2 = Room.new(:bedroom, 11, 15)
@@ -80,6 +80,56 @@ class HouseTest < Minitest::Test
     house.add_room(room_4)
 
     assert_equal 1900, house.area
+  end
+
+  def test_it_can_calculate_price_per_square_foot
+    house = House.new("$400000", "123 sugar lane")
+    room_1 = Room.new(:bedroom, 10, 13)
+    room_2 = Room.new(:bedroom, 11, 15)
+    room_3 = Room.new(:living_room, 25, 15)
+    room_4 = Room.new(:basement, 30, 41)
+
+    house.add_room(room_1)
+    house.add_room(room_2)
+    house.add_room(room_3)
+    house.add_room(room_4)
+
+    assert_equal 210.53, house.price_per_square_foot
+  end
+
+  def test_it_can_sort_rooms_by_area
+    house = House.new("$400000", "123 sugar lane")
+    room_1 = Room.new(:bedroom, 10, 13)
+    room_2 = Room.new(:bedroom, 11, 15)
+    room_3 = Room.new(:living_room, 25, 15)
+    room_4 = Room.new(:basement, 30, 41)
+
+    house.add_room(room_2)
+    house.add_room(room_4)
+    house.add_room(room_1)
+    house.add_room(room_3)
+
+    assert_equal [room_1, room_2, room_3, room_4], house.rooms_sorted_by_area
+  end
+
+  def test_it_can_list_all_rooms_by_category
+    house = House.new("$400000", "123 sugar lane")
+    room_1 = Room.new(:bedroom, 10, 13)
+    room_2 = Room.new(:bedroom, 11, 15)
+    room_3 = Room.new(:living_room, 25, 15)
+    room_4 = Room.new(:basement, 30, 41)
+
+    house.add_room(room_2)
+    house.add_room(room_4)
+    house.add_room(room_1)
+    house.add_room(room_3)
+
+    rooms = house.rooms_by_category
+
+    assert rooms[:bedroom].include?(room_1)
+    assert rooms[:bedroom].include?(room_2)
+    assert rooms[:living_room].include?(room_3)
+    assert rooms[:basement].include?(room_4)
   end
 
 end

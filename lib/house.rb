@@ -12,8 +12,8 @@ class House
   end
 
   def convert_price(price)
-    stripped = price.tr('$,', '')
-    stripped.to_i
+    stripped_price = price.tr('$,', '')
+    stripped_price.to_i
   end
 
   def add_room(new_room)
@@ -33,5 +33,24 @@ class House
       area += room.area
     end
   end
-  
+
+  def price_per_square_foot
+    ppsf = @price.to_f / area
+    ppsf.round(2)
+  end
+
+  def rooms_sorted_by_area
+    @rooms.sort_by do |room|
+      room.area
+    end
+  end
+
+  def rooms_by_category
+    hash = Hash.new([])
+    @rooms.each do |room|
+      hash[room.category] += [room]
+    end
+    return hash
+  end
+
 end
